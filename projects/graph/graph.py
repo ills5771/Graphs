@@ -11,7 +11,7 @@ class Graph:
         self.vertices = {}
 
     def add_vertex(self, vertex):
-        self.vertices[vertex_id] = set()
+        self.vertices[vertex] = set()
         """
         Add a vertex to the graph.
         """
@@ -26,37 +26,40 @@ class Graph:
         """
 
     def bft(self, starting_vertex):
-        q = Queue()
-        q.enqueue(starting_vertex)
-        visited = set()
+        q = Queue()  # empty list FiFO
+        q.enqueue(starting_vertex)  # adding first room to q
+        visited = set()  # 2nd list--rooms already visited
 
         while q.size() > 0:
-            v = q.dequeue()
+            cur_room = q.dequeue()  # pop room
 
-            if v not in visited:
-                print(v)
-                visited.add(v)
-                for next_vert in self.vertices[v]:
-                    q.enqueue(next_vert)
+            if cur_room not in visited:
+                print(cur_room)
+                visited.add(cur_room)
+                for neighbor in self.vertices[cur_room]:
+                    q.enqueue(neighbor)
 
-        """
 
-        Print each vertex in breadth-first order
-        beginning from starting_vertex.
-        """
+self.vertices = {  # all rooms
+    501: [502, 503, 504, 505],
+  502: [501, 503, 504, 505],
+  503: [501, 502, 504, 505],
+  504: [501, 502, 504, 505],
+  505: [501, 502, 503, 504]
+}
 
-    def dft(self, starting_vertex):
+   def dft(self, starting_vertex):
         s = Stack()
         s.push(starting_vertex)
         visited = set()
 
         while s.size() > 0:
-            v = s.pop()
+            cur_room = s.pop()
 
-            if v not in visited:
-                print(v)
-                visited.add(v)
-                for next_vert in self.vertices[v]:
+            if cur_room not in visited:
+                print(cur_room)
+                visited.add(cur_room)
+                for next_vert in self.vertices[cur_room]:
                     s.push(next_vert)
         """
         Print each vertex in depth-first order
@@ -77,7 +80,22 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
-        pass  # TODO
+        q = Queue()
+        q.enqueue([starting_vertex])
+        visited = set()
+
+        while q.size() > 0:
+            path = q.dequeue()
+            v = path[-1]
+            if v not in visited:
+                if v == destination_vertex:
+                    return path
+                visited.add(v)
+                for n in self.vertices[v]:
+                    copy_path = path.copy()
+                    copy_path.append(n)
+                    q.enqueue(copy_path)
+        return None
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -85,7 +103,22 @@ class Graph:
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        pass  # TODO
+        s = Stack()
+        s.push([starting_vertex])
+        visited = set()
+
+        while s.size() > 0:
+            path = s.pop()
+            v = path[-1]
+            if v not in visited:
+                if v == destination_vertex:
+                    return path
+            visited.add(v)
+            for n in self.vertices[v]:
+                new_path = path.copy()
+                new_path.append(n)
+                s.push(new_path)
+        return None
 
 
 if __name__ == '__main__':
@@ -139,7 +172,7 @@ if __name__ == '__main__':
         1, 2, 4, 3, 7, 6, 5
         1, 2, 4, 3, 7, 5, 6
     '''
-    graph.bft(1)
+    print(graph.bft(1))
 
     '''
     Valid DFT recursive paths:
