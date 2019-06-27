@@ -18,7 +18,7 @@ class Graph:
 
     def add_edge(self, v1, v2):
         if v1 in self.vertices and v2 in self.vertices:
-            self.vertices[v1].add(v2)
+            self.vertices[v2].add(v1)
         else:
             raise IndexError('That vertex does not exist')
         """
@@ -40,27 +40,27 @@ class Graph:
                     q.enqueue(neighbor)
 
 
-self.vertices = {  # all rooms
-    501: [502, 503, 504, 505],
-  502: [501, 503, 504, 505],
-  503: [501, 502, 504, 505],
-  504: [501, 502, 504, 505],
-  505: [501, 502, 503, 504]
-}
+# self.vertices = {  # all rooms
+#     501: [502, 503, 504, 505],
+#   502: [501, 503, 504, 505],
+#   503: [501, 502, 504, 505],
+#   504: [501, 502, 504, 505],
+#   505: [501, 502, 503, 504]
+# }
 
-   def dft(self, starting_vertex):
-        s = Stack()
-        s.push(starting_vertex)
-        visited = set()
+#    def dft(self, starting_vertex):
+#         s = Stack()
+#         s.push(starting_vertex)
+#         visited = set()
 
-        while s.size() > 0:
-            cur_room = s.pop()
+#         while s.size() > 0:
+#             cur_room = s.pop()
 
-            if cur_room not in visited:
-                print(cur_room)
-                visited.add(cur_room)
-                for next_vert in self.vertices[cur_room]:
-                    s.push(next_vert)
+#             if cur_room not in visited:
+#                 print(cur_room)
+#                 visited.add(cur_room)
+#                 for next_vert in self.vertices[cur_room]:
+#                     s.push(next_vert)
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
@@ -155,7 +155,7 @@ if __name__ == '__main__':
         1, 2, 4, 7, 6, 3, 5
         1, 2, 4, 6, 3, 5, 7
     '''
-    graph.dft(1)
+    # graph.dft(1)
 
     '''
     Valid BFT paths:
@@ -188,6 +188,8 @@ if __name__ == '__main__':
         [1, 2, 4, 6]
     '''
     print(graph.bfs(1, 6))
+
+    print(graph.bfs(2, 5))
 
     '''
     Valid DFS paths:

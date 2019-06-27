@@ -15,45 +15,45 @@ class Queue():
         return len(self.queue)
 
 
-class Graph():
+class Graph:
+
     def __init__(self):
         self.vertices = {}
 
-    def add_vertex(self, vertex):
-        self.vertices[vertex] = set()
+    def add_vertex(self, vertex_id):
+        if vertex_id not in self.vertices:
+            self.vertices[vertex_id] = set()
 
     def add_edge(self, v1, v2):
         if v1 in self.vertices and v2 in self.vertices:
             self.vertices[v1].add(v2)
         else:
-            raise IndexError('That vertex does not exist')
+            raise IndexError("That vertex does not exist!")
 
 
-def earliest_ancestor(ancestors, starting_id):
+def earliest_ancestor(ancestors, starting_node):
     graph = Graph()
     for pair in ancestors:
         graph.add_vertex(pair[0])
         graph.add_vertex(pair[1])
         graph.add_edge(pair[1], pair[0])
-    return graph.vertices
-    # q = Queue()
-    # q.enqueue(starting_id)
-    # visited = set()
-
-    # while q.size() > 0:
-    #     path = q.dequeue()
-    #     v = path[-1]
-    #     if v not in visited:
-    #         if v == destination_vertex:
-    #             return path
-    #         visited.add(v)
-    #         for n in self.vertices[v]:
-    #             copy_path = path.copy()
-    #             copy_path.append(n)
-    #             q.enqueue(copy_path)
-    # return None
+    max_path_len = 1
+    earliest_ancestor = -1
+    q = Queue()
+    q.enqueue([starting_node])
+    while q.size() > 0:
+        path = q.dequeue()
+        v = path[-1]
+        if (len(path) == max_path_len and v < earliest_ancestor) or (len(path) > max_path_len):
+            earliest_ancestor = v
+            max_path_len = len(path)
+        for neighbor in graph.vertices[v]:
+            path_copy = list(path)
+            path_copy.append(neighbor)
+            q.enqueue(path_copy)
+    return earliest_ancestor
 
 
 test_ancestors = [(1, 3), (2, 3), (3, 6), (5, 6), (5, 7),
                   (4, 5), (4, 8), (8, 9), (11, 8), (10, 1)]
-print(earliest_ancestor(test_ancestors, 6))
+print(earliest_ancestor(test_ancestors, 7))
